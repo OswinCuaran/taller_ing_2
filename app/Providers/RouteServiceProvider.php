@@ -57,7 +57,10 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        // Desactivado para pruebas de rendimiento con Locust:
+        // todos los usuarios simulados comparten una IP.
+        // En producción se mantendría un límite por IP/usuario.
+            return Limit::none();
         });
     }
 }
